@@ -2,23 +2,21 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
 import { BrowserRouter } from 'react-router-dom';
->>>>>>> f1741dd (push)
-=======
->>>>>>> 817619cc518cf8cdda854ae1b708e2a9bcb8584e
+import ApiContext from './contexts/ApiContext';
+
+import { LocalizationProvider } from '@mui/x-date-pickers';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-<<<<<<< HEAD
-    <App />
-=======
     <BrowserRouter>
-      <App />
+      <ApiContext>
+        <LocalizationProvider dateAdapter={AdapterDayjs}>
+          <App />
+        </LocalizationProvider>
+      </ApiContext>
     </BrowserRouter>
->>>>>>> f1741dd (push)
   </React.StrictMode>
 );
