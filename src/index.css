@@ -21,3 +21,24 @@ body {
   font-style: normal;
   font-variation-settings: "slnt" 0;
 }
+/* Hide scrollbar for Chrome, Safari and Opera */
+::-webkit-scrollbar {
+  display: none;
+}
+
+/* Hide scrollbar for IE, Edge and Firefox */
+* {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+/* Hide the spinners */
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Remove arrow background in Firefox */
+input[type="number"] {
+  -moz-appearance: textfield;
+}

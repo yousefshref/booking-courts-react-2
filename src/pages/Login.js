@@ -19,12 +19,11 @@ const Login = () => {
   const loginFunction = async (phone, password) => {
     try {
       const res = await apiContext?.loginFunction(phone, password)
-      if (res.status === 200) {
+      if (res?.data?.token) {
         localStorage.setItem('token', res.data.token)
         localStorage.setItem('username', res.data.user.username)
         localStorage.setItem('email', res.data.user.email)
-        if (res.data.user)
-          navigate('/redirect')
+        if (res?.data?.user) window.location.reload()
       }
     } catch (err) {
       console.log(err);
@@ -46,7 +45,7 @@ const Login = () => {
   }, [alert])
   return (
     <div className='flex w-screen h-screen bg-indigo-200'>
-      <div className='form bg-white justify-center p-4 rounded-e-2xl w-[60%] shadow-2xl flex flex-col'>
+      <div className='form bg-white justify-center p-4 rounded-e-2xl w-full sm:w-[60%] shadow-2xl flex flex-col'>
         <div className='text-center flex flex-col gap-4'>
           {
             alert === 'error' && (
@@ -76,13 +75,13 @@ const Login = () => {
             </Button>
             <hr />
             <div className='text-start flex justify-between'>
-              <p className='text-blue-500 cursor-pointer transition-all hover:text-blue-600'>ليس لديك حساب؟</p>
+              <p onClick={() => navigate('/auth/signup')} className='text-blue-500 cursor-pointer transition-all hover:text-blue-600'>ليس لديك حساب؟</p>
               <p className='text-blue-500 cursor-pointer transition-all hover:text-blue-600'>نسيت كلمة المرور</p>
             </div>
           </form>
         </div>
       </div>
-      <div className='linkawyx flex flex-col justify-center gap-4 p-2 w-[40%]'>
+      <div className='linkawyx hidden sm:flex flex-col justify-center gap-4 p-2 w-[40%]'>
         <div className='w-fit mx-auto'>
           <img className='' src='/images/logo.png' width={300} height={300} alt='linkawyx' />
           <div className='flex flex-col gap-3 text-center'>

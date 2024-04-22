@@ -10,35 +10,67 @@ const Redirect = () => {
   const navigate = useNavigate()
 
   const [user, setUser] = useState({})
+
   const getUser = async () => {
-    const res = await apiContext?.getUser()
-    setUser(res.data)
+    try {
+      const res = await apiContext?.getUser()
+      setUser(res.data)
+    } catch (err) {
+      if (err?.response?.status === 403) {
+        navigate('/auth/login')
+        localStorage.removeItem('token')
+        localStorage.removeItem('username')
+        localStorage.removeItem('email')
+      }
+      console.log(err);
+    }
   }
   useEffect(() => {
-    getUser()
+    if (localStorage.getItem('token')) {
+      getUser()
+    } else {
+      navigate('/auth/login')
+      localStorage.removeItem('token')
+      localStorage.removeItem('username')
+      localStorage.removeItem('email')
+    }
   }, [])
 
   const [alert, setAlert] = useState(false)
 
+  const [loading, setLoading] = useState(true)
   const checkProfile = async () => {
+    setLoading(true)
     try {
-      const res = await apiContext?.checkProfile()
+      const res = await apiContext?.checkProfile(localStorage.getItem('token'))
+      console.log(res);
       if (res.data.manager) {
-        navigate(`/manager/${user.username}`)
+        navigate(`/manager/${localStorage.getItem('username')}`)
       }
       if (res.data.staff) {
-        navigate(`/staff/${user.username}`)
+        navigate(`/staff/${localStorage.getItem('username')}`)
       }
       if (res.data.user) {
-        navigate(`/profile/${user.username}`)
+        navigate(`/profile/${localStorage.getItem('username')}`)
+      }
+      if (res.data.no_user) {
+        navigate(`/auth/login`)
+        localStorage.removeItem('token')
+        localStorage.removeItem('username')
+        localStorage.removeItem('email')
       }
     } catch (err) {
       setAlert(true)
+      navigate('/check/profile')
+    } finally {
+      setLoading(false)
     }
   }
   useEffect(() => {
-    if (user.id) checkProfile()
-  }, [user.id])
+    if (localStorage.getItem('token')) {
+      checkProfile()
+    }
+  }, [user, loading, alert])
   return (
     <div className='w-screen h-screen flex flex-col justify-center'>
       {

@@ -1,9 +1,11 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { ApiContextProvider } from '../contexts/ApiContext'
-import { Navigate } from 'react-router-dom'
+import { Navigate, useNavigate } from 'react-router-dom'
 
 const PrivateRoute = ({ children }) => {
   const apiContext = useContext(ApiContextProvider)
+
+  const navigate = useNavigate()
 
   const [user, setUser] = useState({})
   const [loading, setLoading] = useState(true)
@@ -14,7 +16,7 @@ const PrivateRoute = ({ children }) => {
       setUser(res.data)
     } catch (err) {
       setErr(true)
-      console.log(err);
+      navigate('/auth/login')
     } finally {
       setLoading(false)
     }
